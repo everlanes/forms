@@ -108,6 +108,21 @@ export default {
 		},
 
 		/**
+		 * Calculating the format, that moment should use for storing the values to the Database
+		 *
+		 * @return {string}
+		 */
+		getStorageFormat() {
+			if (this.datetimePickerType === 'datetime') {
+				return 'YYYY-MM-DD HH:mm'
+			}
+			if (this.datetimePickerType === 'time') {
+				return 'HH:mm'
+			}
+			return 'YYYY-MM-DD'
+		},
+
+		/**
 		 * All non-exposed props onto datepicker input-element.
 		 *
 		 * @return {object}
@@ -146,7 +161,7 @@ export default {
 		 * @param {string} dateString The parsed string to store
 		 */
 		onValueChange(dateString) {
-			this.$emit('update:values', [dateString])
+			this.$emit('update:values', [moment(this.parse(dateString)).format(this.getStorageFormat)])
 		},
 	},
 }
