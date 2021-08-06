@@ -232,7 +232,7 @@ export default {
 			// Extract property datetime from answerTypes and copy rest to filteredAnswerTypes
 			const { datetime, ...filteredAnswerTypes } = answerTypes
 			return filteredAnswerTypes
-		}
+		},
 	},
 
 	watch: {
