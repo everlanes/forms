@@ -71,6 +71,28 @@ Returns condensed objects of all Forms, that are shared & shown to the authentic
 See above, 'List owned forms'
 ```
 
+### Get a partial Form
+Returns a single partial form object, corresponding to owned/shared form-listings.
+- Endpoint: `/api/v2/partial_form/{hash}`
+- Method: `GET`
+- Url-Parameter:
+  | Parameter | Type    | Description |
+  |-----------|---------|-------------|
+  | _hash_    | String  | Hash of the form to request |
+- Response: Partial form object, similar to form-list elements.
+```
+"data": {
+  "id": 6,
+  "hash": "yWeMwcwCwoqRs8T2",
+  "title": "Form 2",
+  "expires": 0,
+  "permissions": [
+    "submit"
+  ],
+  "partial": true
+}
+```
+
 ### Create a new Form
 - Endpoint: `/api/v2/form`
 - Method: `POST`
@@ -162,7 +184,7 @@ Returns the full-depth object of the requested form (without submissions).
 
 ### Clone a form
 Creates a clone of a form (without submissions).
-- Endpoint: `/api/v1.1/form/clone/{id}`
+- Endpoint: `/api/v2/form/clone/{id}`
 - Url-Parameter:
   | Parameter | Type    | Description |
   |-----------|---------|-------------|
@@ -175,7 +197,7 @@ See section 'Request full data of a form'.
 
 ### Update form properties
 Update a single or multiple properties of a form-object. Concerns **only** the Form-Object, properties of Questions, Options and Submissions, as well as their creation or deletion, are handled separately.
-- Endpoint: `/api/v1.1/form/update`
+- Endpoint: `/api/v2/form/update`
 - Method: `POST`
 - Parameters:
   | Parameter | Type    | Description |
@@ -189,7 +211,7 @@ Update a single or multiple properties of a form-object. Concerns **only** the F
 ```
 
 ### Delete a form
-- Endpoint: `/api/v1.1/form/{id}`
+- Endpoint: `/api/v2/form/{id}`
 - Url-Parameter:
   | Parameter | Type    | Description |
   |-----------|---------|-------------|
@@ -463,7 +485,7 @@ Delete all Submissions to a form
 
 ### Insert a Submission
 Store Submission to Database
-- Endpoint: `/api/v1.1/submission/insert`
+- Endpoint: `/api/v2/submission/insert`
 - Method: `POST`
 - Parameters:
   | Parameter | Type    | Description |

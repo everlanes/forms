@@ -285,7 +285,7 @@ class ApiController extends OCSController {
 	 * @throws OCSBadRequestException
 	 * @throws OCSForbiddenException
 	 */
-	public function cloneForm(int $id): DataResponse {
+	public function cloneForm(int $id, string $apiVersion): DataResponse {
 		$this->logger->debug('Cloning Form: {id}', [
 			'id' => $id
 		]);
@@ -340,7 +340,7 @@ class ApiController extends OCSController {
 		}
 
 		// Return just like getForm does. Returns the full form.
-		return $this->getForm($newForm->getId());
+		return $this->getForm($newForm->getId(), $apiVersion);
 	}
 
 	/**

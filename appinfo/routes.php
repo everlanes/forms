@@ -107,7 +107,7 @@ return [
 			'url' => '/api/{apiVersion}/partial_form/{hash}',
 			'verb' => 'GET',
 			'requirements' => [
-				'apiVersion' => 'v1\.1|v2'
+				'apiVersion' => 'v2'
 			]
 		],
 		[
