@@ -366,6 +366,18 @@ Contains only manipulative question-endpoints. To retrieve options, request the 
 }
 ```
 
+### Delete a Share
+- Endpoint: `/api/v2/share/{id}`
+- Url-Parameter:
+  | Parameter | Type    | Description |
+  |-----------|---------|-------------|
+  | _id_      | Integer | ID of the share to delete |
+- Method: `DELETE`
+- Response: **Status-Code OK**, as well as the id of the deleted share.
+```
+"data": 5
+```
+
 
 ## Submission Endpoints
 ### Get Form Submissions

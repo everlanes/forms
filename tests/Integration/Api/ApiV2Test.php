@@ -915,8 +915,8 @@ class ApiV2Test extends TestCase {
 				'expected' => [
 					// 'formId' => Checked dynamically
 					'shareType' => 0,
-					'shareWith' => 'admin',
-					'displayName' => 'admin'
+					'shareWith' => 'test',
+					'displayName' => 'Test Displayname'
 				]
 			]
 		];
@@ -931,16 +931,44 @@ class ApiV2Test extends TestCase {
 			'json' => [
 				'formId' => $this->testForms[0]['id'],
 				'shareType' => 0,
-				'shareWith' => 'admin'
+				'shareWith' => 'test'
 			]
 		]);
 		$data = $this->OcsResponse2Data($resp);
+
+		// Store for cleanup
+		$this->testForms[0]['shares'][] = $data;
 
 		$this->assertEquals(200, $resp->getStatusCode());
 		$this->assertEquals($this->testForms[0]['id'], $data['formId']);
 		unset($data['formId']);
 		unset($data['id']);
 		$this->assertEquals($expected, $data);
+	}
+
+	public function dataDeleteShare() {
+		$fullFormExpected = $this->dataGetFullForm()['getFullForm']['expected'];
+		array_splice($fullFormExpected['shares'], 0, 1);
+
+		return [
+			'deleteShare' => [
+				'fullFormExpected' => $fullFormExpected
+			]
+		];
+	}
+	/**
+	 * @dataProvider dataDeleteShare
+	 *
+	 * @param array $fullFormExpected
+	 */
+	public function testDeleteShare(array $fullFormExpected) {
+		$resp = $this->http->request('DELETE', "api/v2/share/{$this->testForms[0]['shares'][0]['id']}");
+		$data = $this->OcsResponse2Data($resp);
+
+		$this->assertEquals(200, $resp->getStatusCode());
+		$this->assertEquals($this->testForms[0]['shares'][0]['id'], $data);
+
+		$this->testGetFullForm($fullFormExpected);
 	}
 
 	public function dataGetSubmissions() {
