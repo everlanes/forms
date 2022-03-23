@@ -318,11 +318,6 @@ class ApiV1_1Test extends TestCase {
 					'hash' => 'abcdefg',
 					'title' => 'Title of a Form',
 					'expires' => 0,
-					'permissions' => [
-						'edit',
-						'results',
-						'submit'
-					],
 					'partial' => true
 				]]
 			]
@@ -350,9 +345,6 @@ class ApiV1_1Test extends TestCase {
 					'hash' => 'abcdefghij',
 					'title' => 'Title of a second Form',
 					'expires' => 0,
-					'permissions' => [
-						'submit'
-					],
 					'partial' => true
 				]]
 			]
@@ -368,36 +360,6 @@ class ApiV1_1Test extends TestCase {
 
 		$data = $this->OcsResponse2Data($resp);
 		$data = $this->arrayUnsetId($data);
-
-		$this->assertEquals(200, $resp->getStatusCode());
-		$this->assertEquals($expected, $data);
-	}
-
-	public function dataGetPartialForm() {
-		return [
-			'getPartialForm' => [
-				'expected' => [
-					'hash' => 'abcdefghij',
-					'title' => 'Title of a second Form',
-					'expires' => 0,
-					'permissions' => [
-						'submit'
-					],
-					'partial' => true
-				]
-			]
-		];
-	}
-	/**
-	 * @dataProvider dataGetPartialForm
-	 *
-	 * @param array $expected
-	 */
-	public function testGetPartialForm(array $expected): void {
-		$resp = $this->http->request('GET', "api/v1.1/partial_form/{$this->testForms[1]['hash']}");
-
-		$data = $this->OcsResponse2Data($resp);
-		unset($data['id']);
 
 		$this->assertEquals(200, $resp->getStatusCode());
 		$this->assertEquals($expected, $data);
@@ -420,13 +382,7 @@ class ApiV1_1Test extends TestCase {
 					'isAnonymous' => false,
 					'submitOnce' => true,
 					'canSubmit' => true,
-					'permissions' => [
-						'edit',
-						'results',
-						'submit'
-					],
 					'questions' => [],
-					'shares' => [],
 				]
 			]
 		];
@@ -473,11 +429,6 @@ class ApiV1_1Test extends TestCase {
 					'isAnonymous' => false,
 					'submitOnce' => true,
 					'canSubmit' => true,
-					'permissions' => [
-						'edit',
-						'results',
-						'submit'
-					],
 					'questions' => [
 						[
 							'type' => 'short',
@@ -500,18 +451,6 @@ class ApiV1_1Test extends TestCase {
 								]
 							]
 						]
-					],
-					'shares' => [
-						[
-							'shareType' => 0,
-							'shareWith' => 'user1',
-							'displayName' => ''
-						],
-						[
-							'shareType' => 3,
-							'shareWith' => 'shareHash',
-							'displayName' => ''
-						],
 					],
 				]
 			]
@@ -905,68 +844,6 @@ class ApiV1_1Test extends TestCase {
 
 		$this->assertEquals(200, $resp->getStatusCode());
 		$this->assertEquals($this->testForms[0]['questions'][1]['options'][0]['id'], $data);
-
-		$this->testGetFullForm($fullFormExpected);
-	}
-
-	public function dataAddShare() {
-		return [
-			'addAShare' => [
-				'expected' => [
-					// 'formId' => Checked dynamically
-					'shareType' => 0,
-					'shareWith' => 'test',
-					'displayName' => 'Test Displayname'
-				]
-			]
-		];
-	}
-	/**
-	 * @dataProvider dataAddShare
-	 *
-	 * @param array $expected
-	 */
-	public function testAddShare(array $expected) {
-		$resp = $this->http->request('POST', 'api/v1.1/share', [
-			'json' => [
-				'formId' => $this->testForms[0]['id'],
-				'shareType' => 0,
-				'shareWith' => 'test'
-			]
-		]);
-		$data = $this->OcsResponse2Data($resp);
-
-		// Store for cleanup
-		$this->testForms[0]['shares'][] = $data;
-
-		$this->assertEquals(200, $resp->getStatusCode());
-		$this->assertEquals($this->testForms[0]['id'], $data['formId']);
-		unset($data['formId']);
-		unset($data['id']);
-		$this->assertEquals($expected, $data);
-	}
-
-	public function dataDeleteShare() {
-		$fullFormExpected = $this->dataGetFullForm()['getFullForm']['expected'];
-		array_splice($fullFormExpected['shares'], 0, 1);
-
-		return [
-			'deleteShare' => [
-				'fullFormExpected' => $fullFormExpected
-			]
-		];
-	}
-	/**
-	 * @dataProvider dataDeleteShare
-	 *
-	 * @param array $fullFormExpected
-	 */
-	public function testDeleteShare(array $fullFormExpected) {
-		$resp = $this->http->request('DELETE', "api/v1.1/share/{$this->testForms[0]['shares'][0]['id']}");
-		$data = $this->OcsResponse2Data($resp);
-
-		$this->assertEquals(200, $resp->getStatusCode());
-		$this->assertEquals($this->testForms[0]['shares'][0]['id'], $data);
 
 		$this->testGetFullForm($fullFormExpected);
 	}
