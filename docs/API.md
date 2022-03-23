@@ -345,6 +345,27 @@ Contains only manipulative question-endpoints. To retrieve options, request the 
 "data": 7
 ```
 
+## Sharing Endpoints
+### Add a new Share
+- Endpoint: `/api/v2/share`
+- Method: `POST`
+- Parameters:
+  | Parameter   | Type    | Description |
+  |-------------|---------|-------------|
+  | _formId_    | Integer | Id of the form to share |
+  | _shareType_ | String  | NC-shareType, out of the used shareTypes. |
+  | _shareWith_ | String  | User/Group/Hash for the share. Can be empty for link shares, thus triggering hash creation. |
+- Response: **Status-Code OK**, as well as the new share object.
+```
+"data": {
+  "id": 3,
+  "formId": 3,
+  "shareType": 0,
+  "shareWith": "user3",
+  "displayName": "User 3 Displayname"
+}
+```
+
 
 ## Submission Endpoints
 ### Get Form Submissions

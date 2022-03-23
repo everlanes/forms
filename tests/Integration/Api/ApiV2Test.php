@@ -909,6 +909,40 @@ class ApiV2Test extends TestCase {
 		$this->testGetFullForm($fullFormExpected);
 	}
 
+	public function dataAddShare() {
+		return [
+			'addAShare' => [
+				'expected' => [
+					// 'formId' => Checked dynamically
+					'shareType' => 0,
+					'shareWith' => 'admin',
+					'displayName' => 'admin'
+				]
+			]
+		];
+	}
+	/**
+	 * @dataProvider dataAddShare
+	 *
+	 * @param array $expected
+	 */
+	public function testAddShare(array $expected) {
+		$resp = $this->http->request('POST', 'api/v2/share', [
+			'json' => [
+				'formId' => $this->testForms[0]['id'],
+				'shareType' => 0,
+				'shareWith' => 'admin'
+			]
+		]);
+		$data = $this->OcsResponse2Data($resp);
+
+		$this->assertEquals(200, $resp->getStatusCode());
+		$this->assertEquals($this->testForms[0]['id'], $data['formId']);
+		unset($data['formId']);
+		unset($data['id']);
+		$this->assertEquals($expected, $data);
+	}
+
 	public function dataGetSubmissions() {
 		return [
 			'getSubmissions' => [
