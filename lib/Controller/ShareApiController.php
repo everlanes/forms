@@ -113,7 +113,7 @@ class ShareApiController extends OCSController {
 		}
 
 		// Empty shareWith only allowed for Link-Share
-		if ($shareType !== IShare::TYPE_LINK && $shareWith = '')  {
+		if ($shareType !== IShare::TYPE_LINK && $shareWith === '')  {
 			$this->logger->debug('Empty shareWith not allowed.');
 			throw new OCSBadRequestException('Empty shareWith not allowed.');
 		}
