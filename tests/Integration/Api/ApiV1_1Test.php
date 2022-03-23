@@ -33,7 +33,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use Test\TestCase;
 
-class ApiV2Test extends TestCase {
+class ApiV1_1Test extends TestCase {
 	/** @var GuzzleHttp\Client */
 	private $http;
 
